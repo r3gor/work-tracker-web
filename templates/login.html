@@ -1,0 +1,112 @@
+<!-- W3hubs.com - Download Free Responsive Website Layout Templates designed on HTML5 
+   CSS3,Bootstrap,Tailwind CSS which are 100% Mobile friendly. w3Hubs all Layouts are responsive 
+   cross browser supported, best quality world class designs. -->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap" rel="stylesheet">
+  <!-- Google OAuth -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="204095740277-8khgna7ci9g251auvrsn4mvdrgjgup1i.apps.googleusercontent.com">
+  <!-- Fontawesome -->
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Bootswatch Theme -->
+  <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" rel="stylesheet" />
+  
+  <title>Work Tracker - Login</title>
+  
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      height: 100vh;
+      font-family: "Nunito Sans";
+    }
+
+    .form-control {
+      line-height: 2;
+    }
+
+    .bg-custom {
+      background-color: #6C63FF;
+    }
+
+    .btn-custom {
+      background-color: #3e3d56;
+      color: #fff;
+    }
+
+    .btn-custom:hover {
+      background-color: #33313f;
+      color: #fff;
+    }
+
+    label {
+      color: #fff;
+    }
+
+    a,
+    a:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    a,
+    a:hover {
+      text-decoration: none;
+    }
+
+    @media(max-width: 932px) {
+      .display-none {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="row m-0 h-100">
+    <div class="col p-0 text-center d-flex justify-content-center align-items-center display-none">
+      <img src="../static/login.svg" class="w-100">
+    </div>
+    <div class="col p-0 bg-custom d-flex justify-content-center align-items-center flex-column w-100">
+      <img src="https://img.icons8.com/fluent/96/000000/learning.png" />
+      <span class="h1 display-5">Work Tracker <br> <br> </span>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Sign in with your Google account</label>
+      </div>
+      <div class="g-signin2  btn btn-custom btn-xl " id="exampleFormControlInput1" data-width="200" data-height="50"
+        data-longtitle="" data-onsuccess="onSignIn"></div>
+    </div>
+  </div>
+
+  <script>
+    async function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      var id_token = googleUser.getAuthResponse().id_token;
+      console.log("validating ...:")
+      await fetch("/validate_login", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          user_token: id_token
+        })
+      }).then(r => r.json())
+        .then(j => {
+          if (j.success) {
+            console.log("login success!")
+            window.location.replace("/");
+          } else {
+            console.log("login failed")
+          }
+        })
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+/__pycache__
+/.vscode
+/venv
+f.py
+db_test.py
+set_env.cmd
+test.py
+test2.py

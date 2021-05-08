@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google OAuth -->
+  <meta name="google-signin-client_id"
+    content="204095740277-8khgna7ci9g251auvrsn4mvdrgjgup1i.apps.googleusercontent.com">
+  <!-- Fontawesome -->
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Bootswatch Theme -->
+  <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" rel="stylesheet" />
+
+  <title>Work Tracker</title>
+</head>
+
+<body>
+  <script>
+
+  </script>
+
+  <!-- Modal SURE-DELETE -->
+  <div class="modal fade" id="sure-delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="modal-sure-delete-body" class="modal-body">
+          To delete:
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="yes-delete" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal EDIT-RECORD -->
+  <div class="modal fade" id="edit-record" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main page -->
+  <div class="container py-4">
+    <header class="pb-3 mb-4 text-center border-bottom">
+      <a href="/" class="d-flex align-items-center  ">
+        <img src="https://img.icons8.com/fluent/48/000000/learning.png" />
+        <span class="lead fs-4">Work Tracker</span>
+      </a>
+    </header>
+
+    <div class="p-5 mb-4  border rounded-3 ">
+      <div class="container text-center">
+        <h1 class="display-5 fw-bold">Welcome {{ current_user.name }}! <br> </h1>
+        <div class="text-center">
+          <img src="{{ current_user.img_url }}">
+          <p>
+            {{ current_user.email }}
+          </p>
+        </div>
+        <button class="btn btn-lg btn-primary" type="button" onclick="signOut();">
+          Sign out
+        </button>
+      </div>
+    </div>
+
+    <div class="p-3 mb-4  border rounded-3 ">
+      <div class="container text-center">
+        <!-- Main row 1(/1) -->
+        <div class="row">
+
+          <!-- Column 1(/2) -->
+          <div class="col-xl-7 text-center">
+            <!-- Row 1(/2) Col 1 (/1)-->
+            <div class="row">
+              <div class="col text-center">
+                <h3 class="display-6 pb-3">Add Record</h3>
+              </div>
+            </div>
+            <!-- Row 2(/2) -->
+            <div class="row">
+              <!-- Col 1(/2) -->
+              <div class="col-md-6 m-3 p-2 text-center">
+                <!-- Add new task -->
+                <div id="add-task" class="input-group mb-3">
+                  <span class="input-group-text" id="lbl-new-task">New task</span>
+                  <input name="name" id="new-task" type="text" class="form-control" placeholder="Task name">
+                  <i class="fa fa-floppy-o btn btn-outline-success "></i>
+                </div>
+                <!-- Tasks table -->
+                <table id="table-tasks" class="table border">
+                  <caption>List of tasks</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Score</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table-tasks-tbody">
+                    <!-- gen by JS  -->
+                  </tbody>
+                </table>
+              </div>
+              <!-- Col 2(/2) -->
+              <div class="col-sm m-5 p-3">
+                <!-- Add new record -->
+                <div id="add-record">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Task</span>
+                    <input name="name" id="task-name" type="text" class="form-control" placeholder="Task name"
+                      aria-label="Task name" aria-describedby="taskname">
+                  </div>
+                  <label id="value" for="input-value" class="form-label ">Value = 5</label>
+                  <input name="value" id="value" type="range" class="form-range mb-3" min="0" max="10">
+                  <button class="btn m-3 btn-primary">Add Record</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2(/2) -->
+          <div class="col-xl-5 text-center">
+            <!-- Row 1(/2) Col 1(/1) -->
+            <div class="row">
+              <h3 class="display-6 pb-0">Last Records</h3>
+            </div>
+            <!-- Row 2(/2) Col 1(/1) -->
+            <div class="row m-3 p-3">
+              <!-- Records table -->
+              <table id="table-records" class="table border">
+                <thead>
+                  <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- gen by JS  -->
+                </tbody>
+              </table>
+              <!-- View all records btn -->
+              <div class="col">
+                <button id="btn-view-all-records" type="button" class="btn btn-primary">
+                  View all
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      location.href = ("/logout");
+    }
+
+    function onLoad() {
+      gapi.load('auth2', function () {
+        gapi.auth2.init();
+      });
+    }
+  </script>
+  <script src="../static/index.js" type="module"></script>
+  <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
